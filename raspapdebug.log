@@ -1,0 +1,345 @@
+
+   888888ba                              .d888888   888888ba
+   88     8b                            d8     88   88     8b
+  a88aaaa8P' .d8888b. .d8888b. 88d888b. 88aaaaa88a a88aaaa8P
+   88    8b. 88    88 Y8ooooo. 88    88 88     88   88
+   88     88 88.  .88       88 88.  .88 88     88   88
+   dP     dP  88888P8  88888P  88Y888P  88     88   dP
+                               88
+                               dP     Debug Log Generator 1.0
+
+This process collects debug and troubleshooting information about your RaspAP installation.
+It is intended to assist users with a self-diagnosis of their installations, as well as
+provide useful information as a starting point for others to assist with troubleshooting.
+Debug log information contains the RaspAP version, current state and configuration of AP
+related services, relevant installed package versions, Linux kernel version and local
+networking configuration details.
+
+If you wish to share your debug info, paste the output to one of the following:
+  https://pastebin.com/
+  https://paste.ubuntu.com/
+
+Please do NOT paste the log in its entirety to RaspAP's discussions, issues or other
+support channels. Use one of the above links instead.
+
+DISCLAIMER: This log DOES contain details about your system, including networking
+settings. However, NO passwords or other sensitive data are included in the debug output.
+========================================================================================
+
+Debug log generation started at Sun Dec 29 00:09:03 UTC 2024
+
+System Info
+===========
+Hardware: Raspberry Pi 5 Model B Rev 1.0
+Detected OS: Debian GNU/Linux 12 (bookworm) -bit
+Kernel: Linux router 6.6.67-v8+ #1833 SMP PREEMPT Fri Dec 20 14:14:15 GMT 2024 aarch64 GNU/Linux
+System Uptime: 0 days, 21 hours, 1 minutes
+Memory Usage: 4.81337%
+
+Installed Packages
+==================
+PHP Version: 8.2.26 (cli) (built: Nov 25 2024 17:21:51) (NTS)
+Dnsmasq Version: 2.89
+dhcpcd Version: 9.4.1
+lighttpd Version: 1.4.69
+vnStat Version: 2.10
+
+RaspAP Install
+==============
+RaspAP Version: 3.2.4 Insiders
+RaspAP Installation Directory: /var/www/html
+RaspAP hostapd.ini contents:
+Not present
+RaspAP provider.ini: Not present
+
+USB Devices
+===========
+
+
+WPA Supplicant
+==============
+
+
+Dnsmasq Contents
+================
+/etc/dnsmasq.d/090_adblock.conf
+/etc/dnsmasq.d/090_raspap.conf
+/etc/dnsmasq.d/090_wlan0.conf
+
+/etc/dnsmasq.d/090_adblock.conf contents:
+conf-file=/etc/raspap/adblock/domains.txt
+addn-hosts=/etc/raspap/adblock/hostnames.txt$
+
+/etc/dnsmasq.d/090_raspap.conf contents:
+# RaspAP default config
+log-facility=/var/log/dnsmasq.log
+conf-dir=/etc/dnsmasq.d$
+
+/etc/dnsmasq.d/090_wlan0.conf contents:
+# RaspAP wlan0 configuration for wired (ethernet) AP mode
+interface=wlan0
+domain-needed
+dhcp-range=10.3.141.50,10.3.141.254,255.255.255.0,12h$
+
+
+Dhcpcd Contents
+===============
+# RaspAP default configuration
+hostname
+clientid
+persistent
+option rapid_commit
+option domain_name_servers, domain_name, domain_search, host_name
+option classless_static_routes
+option ntp_servers
+require dhcp_server_identifier
+slaac private
+nohook lookup-hostname
+
+# RaspAP wlan0 configuration
+interface wlan0
+static ip_address=10.3.141.1/24
+static routers=10.3.141.1
+static domain_name_server=9.9.9.9 1.1.1.1
+nogateway
+
+Interfaces
+==========
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host noprefixroute
+       valid_lft forever preferred_lft forever
+2: end0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether d8:3a:dd:e4:fa:b1 brd ff:ff:ff:ff:ff:ff
+    inet 172.16.0.143/16 brd 172.16.255.255 scope global noprefixroute end0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::9ccd:3c51:5560:9dd2/64 scope link
+       valid_lft forever preferred_lft forever
+3: enx207bd2cee355: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc pfifo_fast state DOWN group default qlen 1000
+    link/ether 20:7b:d2:ce:e3:55 brd ff:ff:ff:ff:ff:ff
+4: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether d8:3a:dd:e4:fa:b2 brd ff:ff:ff:ff:ff:ff
+    inet 172.16.0.144/16 brd 172.16.255.255 scope global dynamic wlan0
+       valid_lft 51027sec preferred_lft 51027sec
+    inet 10.3.141.1/24 brd 10.3.141.255 scope global noprefixroute wlan0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::da3a:ddff:fee4:fab2/64 scope link
+       valid_lft forever preferred_lft forever
+5: wlx347de44ff497: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN group default qlen 1000
+    link/ether 34:7d:e4:4f:f4:97 brd ff:ff:ff:ff:ff:ff
+    inet6 fe80::ca79:bdfd:40bb:f7da/64 scope link
+       valid_lft forever preferred_lft forever
+6: docker0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN group default
+    link/ether 02:42:60:cd:d1:67 brd ff:ff:ff:ff:ff:ff
+    inet 172.17.0.1/16 brd 172.17.255.255 scope global docker0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::42:60ff:fecd:d167/64 scope link
+       valid_lft forever preferred_lft forever
+
+Routing Table
+=============
+default via 172.16.0.1 dev wlan0
+default via 172.16.0.1 dev end0 proto dhcp src 172.16.0.143 metric 1002
+10.3.141.0/24 dev wlan0 proto dhcp scope link src 10.3.141.1 metric 3004
+172.16.0.0/16 dev wlan0 proto kernel scope link src 172.16.0.144
+172.16.0.0/16 dev end0 proto dhcp scope link src 172.16.0.143 metric 1002
+172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown
+
+IW Device Info
+==============
+phy#0
+	Interface wlx347de44ff497
+		ifindex 5
+		wdev 0x1
+		addr 34:7d:e4:4f:f4:97
+		type AP
+		txpower 30.00 dBm
+		multicast TXQ:
+			qsz-byt	qsz-pkt	flows	drops	marks	overlmt	hashcol	tx-bytes	tx-packets
+			0	0	0	0	0	0	0	0		0
+phy#1
+	Unnamed/non-netdev interface
+		wdev 0x100000002
+		addr da:3a:dd:e4:fa:b2
+		type P2P-device
+		txpower 31.00 dBm
+	Interface wlan0
+		ifindex 4
+		wdev 0x100000001
+		addr d8:3a:dd:e4:fa:b2
+		ssid CandyLAN
+		type managed
+		channel 36 (5180 MHz), width: 80 MHz, center1: 5210 MHz
+		txpower 31.00 dBm
+
+IW Regulatory Info
+==================
+global
+country US: DFS-FCC
+	(902 - 904 @ 2), (N/A, 30), (N/A)
+	(904 - 920 @ 16), (N/A, 30), (N/A)
+	(920 - 928 @ 8), (N/A, 30), (N/A)
+	(2400 - 2472 @ 40), (N/A, 30), (N/A)
+	(5150 - 5250 @ 80), (N/A, 23), (N/A), AUTO-BW
+	(5250 - 5350 @ 80), (N/A, 24), (0 ms), DFS, AUTO-BW
+	(5470 - 5730 @ 160), (N/A, 24), (0 ms), DFS
+	(5730 - 5850 @ 80), (N/A, 30), (N/A), AUTO-BW
+	(5850 - 5895 @ 40), (N/A, 27), (N/A), NO-OUTDOOR, AUTO-BW, PASSIVE-SCAN
+	(5925 - 7125 @ 320), (N/A, 12), (N/A), NO-OUTDOOR, PASSIVE-SCAN
+	(57240 - 71000 @ 2160), (N/A, 40), (N/A)
+
+phy#1
+country 99: DFS-UNSET
+	(2402 - 2482 @ 40), (6, 20), (N/A)
+	(2474 - 2494 @ 20), (6, 20), (N/A)
+	(5140 - 5360 @ 160), (6, 20), (N/A)
+	(5460 - 5860 @ 160), (6, 20), (N/A)
+
+Systemd Services
+================
+hostapd status:
+● hostapd.service - Access point and authentication server for Wi-Fi and Ethernet
+     Loaded: loaded (/lib/systemd/system/hostapd.service; enabled; preset: enabled)
+     Active: active (running) since Sat 2024-12-28 04:57:13 UTC; 19h ago
+       Docs: man:hostapd(8)
+    Process: 274 ExecStart=/usr/sbin/hostapd -B -P /run/hostapd.pid $DAEMON_OPTS ${DAEMON_CONF} (code=exited, status=0/SUCCESS)
+   Main PID: 275 (hostapd)
+      Tasks: 1 (limit: 737)
+     Memory: 684.0K
+        CPU: 287ms
+     CGroup: /system.slice/docker-e3d869f2028e07f2e64c983f80bd7c6554801eeffd11c4287df2e462b17f9320.scope/system.slice/hostapd.service
+             └─275 /usr/sbin/hostapd -B -P /run/hostapd.pid /etc/hostapd/hostapd.conf
+
+Dec 28 04:57:13 router systemd[1]: Starting hostapd.service - Access point and authentication server for Wi-Fi and Ethernet...
+Dec 28 04:57:13 router hostapd[274]: wlan0: interface state UNINITIALIZED->COUNTRY_UPDATE
+Dec 28 04:57:13 router hostapd[274]: wlan0: interface state COUNTRY_UPDATE->ENABLED
+Dec 28 04:57:13 router hostapd[274]: wlan0: AP-ENABLED
+Dec 28 04:57:13 router systemd[1]: Started hostapd.service - Access point and authentication server for Wi-Fi and Ethernet.
+
+dnsmasq status:
+× dnsmasq.service - dnsmasq - A lightweight DHCP and caching DNS server
+     Loaded: loaded (/lib/systemd/system/dnsmasq.service; enabled; preset: enabled)
+     Active: failed (Result: exit-code) since Sat 2024-12-28 04:57:20 UTC; 19h ago
+    Process: 325 ExecStartPre=/etc/init.d/dnsmasq checkconfig (code=exited, status=0/SUCCESS)
+    Process: 332 ExecStart=/etc/init.d/dnsmasq systemd-exec (code=exited, status=2)
+        CPU: 395ms
+
+Dec 28 04:57:19 router systemd[1]: Starting dnsmasq.service - dnsmasq - A lightweight DHCP and caching DNS server...
+Dec 28 04:57:20 router dnsmasq[332]: dnsmasq: failed to create listening socket for port 53: Address already in use
+Dec 28 04:57:20 router dnsmasq[332]: failed to create listening socket for port 53: Address already in use
+Dec 28 04:57:20 router dnsmasq[332]: FAILED to start up
+Dec 28 04:57:20 router systemd[1]: dnsmasq.service: Control process exited, code=exited, status=2/INVALIDARGUMENT
+Dec 28 04:57:20 router systemd[1]: dnsmasq.service: Failed with result 'exit-code'.
+Dec 28 04:57:20 router systemd[1]: Failed to start dnsmasq.service - dnsmasq - A lightweight DHCP and caching DNS server.
+
+dhcpcd status:
+● dhcpcd.service - DHCP Client Daemon on all interfaces
+     Loaded: loaded (/lib/systemd/system/dhcpcd.service; enabled; preset: enabled)
+     Active: active (running) since Sat 2024-12-28 04:57:16 UTC; 19h ago
+       Docs: man:dhcpcd(8)
+    Process: 278 ExecStart=/usr/sbin/dhcpcd -q -b (code=exited, status=0/SUCCESS)
+   Main PID: 280 (dhcpcd)
+      Tasks: 6 (limit: 737)
+     Memory: 1.6M
+        CPU: 215ms
+     CGroup: /system.slice/docker-e3d869f2028e07f2e64c983f80bd7c6554801eeffd11c4287df2e462b17f9320.scope/system.slice/dhcpcd.service
+             ├─280 "dhcpcd: [manager] [ip4] [ip6]"
+             ├─281 "dhcpcd: [privileged proxy]"
+             ├─282 "dhcpcd: [network proxy]"
+             ├─283 "dhcpcd: [control proxy]"
+             ├─306 "dhcpcd: [BPF ARP] end0 172.16.0.143"
+             └─420 "dhcpcd: [BPF ARP] wlan0 10.3.141.1"
+
+Dec 28 04:57:26 router dhcpcd[281]: wlan0: probing address 10.3.141.1/24
+Dec 28 04:57:26 router dhcpcd[281]: wlan0: carrier lost - roaming
+Dec 28 04:57:26 router dhcpcd[281]: wlan0: carrier acquired
+Dec 28 04:57:26 router dhcpcd[281]: wlan0: IAID dd:e4:fa:b2
+Dec 28 04:57:26 router dhcpcd[281]: wlan0: probing address 10.3.141.1/24
+Dec 28 04:57:27 router dhcpcd[281]: wlan0: soliciting an IPv6 router
+Dec 28 04:57:30 router dhcpcd[281]: end0: no IPv6 Routers available
+Dec 28 04:57:31 router dhcpcd[281]: wlan0: using static address 10.3.141.1/24
+Dec 28 04:57:31 router dhcpcd[281]: wlan0: adding route to 10.3.141.0/24
+Dec 28 04:57:39 router dhcpcd[281]: wlan0: no IPv6 Routers available
+
+systemd-networkd status:
+○ systemd-networkd.service - Network Configuration
+     Loaded: loaded (/lib/systemd/system/systemd-networkd.service; disabled; preset: enabled)
+     Active: inactive (dead)
+TriggeredBy: ○ systemd-networkd.socket
+       Docs: man:systemd-networkd.service(8)
+             man:org.freedesktop.network1(5)
+
+wg-quick@wg0 status:
+× wg-quick@wg0.service - WireGuard via wg-quick(8) for wg0
+     Loaded: loaded (/lib/systemd/system/wg-quick@.service; enabled; preset: enabled)
+     Active: failed (Result: exit-code) since Sat 2024-12-28 04:57:13 UTC; 19h ago
+       Docs: man:wg-quick(8)
+             man:wg(8)
+             https://www.wireguard.com/
+             https://www.wireguard.com/quickstart/
+             https://git.zx2c4.com/wireguard-tools/about/src/man/wg-quick.8
+             https://git.zx2c4.com/wireguard-tools/about/src/man/wg.8
+    Process: 233 ExecStart=/usr/bin/wg-quick up wg0 (code=exited, status=1/FAILURE)
+   Main PID: 233 (code=exited, status=1/FAILURE)
+        CPU: 4ms
+
+Dec 28 04:57:13 router systemd[1]: Starting wg-quick@wg0.service - WireGuard via wg-quick(8) for wg0...
+Dec 28 04:57:13 router wg-quick[233]: wg-quick: `/etc/wireguard/wg0.conf' does not exist
+Dec 28 04:57:13 router systemd[1]: wg-quick@wg0.service: Main process exited, code=exited, status=1/FAILURE
+Dec 28 04:57:13 router systemd[1]: wg-quick@wg0.service: Failed with result 'exit-code'.
+Dec 28 04:57:13 router systemd[1]: Failed to start wg-quick@wg0.service - WireGuard via wg-quick(8) for wg0.
+
+openvpn-client@client status:
+× openvpn-client@client.service - OpenVPN tunnel for client
+     Loaded: loaded (/lib/systemd/system/openvpn-client@.service; enabled; preset: enabled)
+     Active: failed (Result: exit-code) since Sat 2024-12-28 04:57:12 UTC; 19h ago
+       Docs: man:openvpn(8)
+             https://community.openvpn.net/openvpn/wiki/Openvpn24ManPage
+             https://community.openvpn.net/openvpn/wiki/HOWTO
+    Process: 118 ExecStart=/usr/sbin/openvpn --suppress-timestamps --nobind --config client.conf (code=exited, status=1/FAILURE)
+   Main PID: 118 (code=exited, status=1/FAILURE)
+        CPU: 15ms
+
+Dec 28 04:57:12 router systemd[1]: Starting openvpn-client@client.service - OpenVPN tunnel for client...
+Dec 28 04:57:12 router openvpn[118]: Options error: In [CMD-LINE]:1: Error opening configuration file: client.conf
+Dec 28 04:57:12 router openvpn[118]: Use --help for more information.
+Dec 28 04:57:12 router systemd[1]: openvpn-client@client.service: Main process exited, code=exited, status=1/FAILURE
+Dec 28 04:57:12 router systemd[1]: openvpn-client@client.service: Failed with result 'exit-code'.
+Dec 28 04:57:12 router systemd[1]: Failed to start openvpn-client@client.service - OpenVPN tunnel for client.
+
+lighttpd status:
+● lighttpd.service - Lighttpd Daemon
+     Loaded: loaded (/lib/systemd/system/lighttpd.service; enabled; preset: enabled)
+     Active: active (running) since Sat 2024-12-28 04:57:12 UTC; 19h ago
+    Process: 113 ExecStartPre=/usr/sbin/lighttpd -tt -f /etc/lighttpd/lighttpd.conf (code=exited, status=0/SUCCESS)
+   Main PID: 200 (lighttpd)
+      Tasks: 11 (limit: 737)
+     Memory: 13.6M
+        CPU: 2.473s
+     CGroup: /system.slice/docker-e3d869f2028e07f2e64c983f80bd7c6554801eeffd11c4287df2e462b17f9320.scope/system.slice/lighttpd.service
+             ├─  200 /usr/sbin/lighttpd -D -f /etc/lighttpd/lighttpd.conf
+             ├─  228 /usr/bin/php-cgi
+             ├─  229 /usr/bin/php-cgi
+             ├─  230 /usr/bin/php-cgi
+             ├─  231 /usr/bin/php-cgi
+             ├─  232 /usr/bin/php-cgi
+             ├─15949 sh -c "sudo /etc/raspap/system/debuglog.sh -i /var/www/html"
+             ├─15950 sudo /etc/raspap/system/debuglog.sh -i /var/www/html
+             ├─15951 /bin/bash /etc/raspap/system/debuglog.sh -i /var/www/html
+             ├─16008 /bin/bash /etc/raspap/system/debuglog.sh -i /var/www/html
+             └─16009 systemctl status lighttpd
+
+Dec 28 15:50:37 router sudo[9368]: pam_unix(sudo:session): session closed for user root
+Dec 29 00:08:56 router lighttpd[15808]: sh: 1: iwgetid: not found
+Dec 29 00:08:56 router sudo[15813]: www-data : PWD=/var/www/html ; USER=root ; COMMAND=/bin/chmod o+r /tmp/hostapd.log
+Dec 29 00:08:56 router sudo[15813]: pam_unix(sudo:session): session opened for user root(uid=0) by (uid=33)
+Dec 29 00:08:56 router lighttpd[15814]: /bin/chmod: cannot access '/tmp/hostapd.log': No such file or directory
+Dec 29 00:08:56 router sudo[15813]: pam_unix(sudo:session): session closed for user root
+Dec 29 00:09:03 router sudo[15950]: www-data : PWD=/var/www/html/ajax/system ; USER=root ; COMMAND=/etc/raspap/system/debuglog.sh -i /var/www/html
+Dec 29 00:09:03 router sudo[15950]: pam_unix(sudo:session): session opened for user root(uid=0) by (uid=33)
+Dec 29 00:09:03 router lighttpd[15985]: /etc/raspap/system/debuglog.sh: line 190: lsusb: command not found
+Dec 29 00:09:03 router lighttpd[15986]: Failed to connect to non-global ctrl_ifname: (nil)  error: Success
+
+RaspAP debug log generation complete.
